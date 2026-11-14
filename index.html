@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pentesting 101</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Notion'ın kullandığı Inter fontu -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Notion Yan Menü (Sidebar) -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="workspace-icon">📚</span>
+            <span class="workspace-name">Pentesting 101</span>
+        </div>
+        <div class="sidebar-search">
+            <input type="text" id="aramaKutusu" placeholder="Ara..." onkeyup="notlariFiltrele()">
+        </div>
+        <nav class="sidebar-nav" id="menuListesi">
+            <!-- Menü elemanları JS ile buraya gelecek -->
+        </nav>
+        <div class="sidebar-footer">
+            <p>Topluluk Notları</p>
+        </div>
+    </aside>
+
+    <!-- Ana İçerik Alanı -->
+    <main class="main-content">
+        <div class="content-wrapper" id="notIcerikAlani">
+            <!-- Seçilen notun içeriği buraya gelecek -->
+        </div>
+    </main>
+
+    <script>
+        let tumNotlar = [];
+        let aktifNotId = null;
+
+        // JSON dosyasını oku
+        fetch('notlar.json')
+            .then(response => response.json())
+            .then(data => {
+                tumNotlar = data;
+                menuyuOlustur(tumNotlar);
+                // İlk notu varsayılan olarak aç
+                if(tumNotlar.length > 0) {
+                    notAc(tumNotlar[0].id);
+                }
+            })
+            .catch(error => {
+                document.getElementById('notIcerikAlani').innerHTML = "<h1>Hata: notlar.json dosyası bulunamadı.</h1>";
+            });
+
+        // Sol menüyü oluştur
+        function menuyuOlustur(notlar) {
+            const menu = document.getElementById('menuListesi');
+            menu.innerHTML = '';
+
+            notlar.forEach(not => {
+                const link = document.createElement('a');
+                link.href = "#";
+                link.className = 'menu-item';
+                link.innerHTML = `<span class="page-icon">📄</span> ${not.baslik}`;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    notAc(not.id);
+                };
+                menu.appendChild(link);
+            });
+        }
+
+        // Notu ana ekranda aç
+        function notAc(id) {
+            aktifNotId = id;
+            const not = tumNotlar.find(n => n.id === id);
+            const alan = document.getElementById('notIcerikAlani');
+
+            if(not) {
+                // Notion'da bir sayfa açıldığında üstte çıkan ikon ve başlık yapısı
+                alan.innerHTML = `
+                    <div class="page-header">
+                        <div class="page-icon-large">📄</div>
+                        <h1 class="page-title">${not.baslik}</h1>
+                        <div class="page-meta">
+                            <span class="tag">${not.kategori}</span>
+                        </div>
+                    </div>
+                    <div class="page-body">
+                        ${not.icerik}
+                    </div>
+                `;
+            }
+        }
+
+        // Arama fonksiyonu
+        function notlariFiltrele() {
+            const aranan = document.getElementById('aramaKutusu').value.toLowerCase();
+            const filtrelenmis = tumNotlar.filter(not => 
+                not.baslik.toLowerCase().includes(aranan) || 
+                not.icerik.toLowerCase().includes(aranan)
+            );
+            menuyuOlustur(filtrelenmis);
+        }
+    </script>
+</body>
+</html>
