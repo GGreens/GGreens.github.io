@@ -1,0 +1,14 @@
+[
+  {
+    "id": "1",
+    "baslik": "Pentesting 101",
+    "kategori": "Genel Bakış",
+    "icerik": "Sertifika Sınavları, CTF/lab çözümleri, Sızma testi ve Bug Hunting için hazırladığım notlar.<br><br><i>Hazırladığım notlar temel bilgisi olan kişilere yöneliktir. Derinlemesine teorik bir anlatım veya doğrudan bir eğitim içermez!</i><br><br>Okuyucunun Network, Web, OS temelleri gibi konulara hakim olduğu varsayılarak yazılmıştır.<br><br><b>İçindekiler:</b><br><a href='#'>Metodoloji</a><br><a href='#'>Yaygın Protokoller</a>"
+  },
+  {
+    "id": "2",
+    "baslik": "Metodoloji",
+    "kategori": "Sızma Testi",
+    "icerik": "Sızma testi süreci genel olarak şu adımlardan oluşur:<br><br>1. <b>Keşif (Reconnaissance)</b><br>2. <b>Tarama ve Numaralandırma (Scanning & Enumeration)</b><br>3. <b>Zafiyet Analizi (Vulnerability Analysis)</b><br>4. <b>Sömürü (Exploitation)</b><br>5. <b>Yetki Yükseltme (Privilege Escalation)</b><br>6. <b>Raporlama (Reporting)</b><br><br>Örnek bir Nmap komutu:<br><code>nmap -sV -sC -p- 192.168.1.1</code>"
+  }
+]
